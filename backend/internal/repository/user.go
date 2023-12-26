@@ -26,6 +26,7 @@ type userRepository struct {
 }
 
 func (self *userRepository) CreateUser(login string, email string, password string, role types.Role) error {
+
 	userEntity := User{
 		Login:    login,
 		Email:    email,
@@ -98,6 +99,11 @@ func (self *userRepository) LoginUser(email string, password string) (*entities.
 
 // RegisterUser implements user.Repository.
 func (self *userRepository) RegisterUser(login string, email string, password string) (*entities.UserEntity, error) {
+	var existingUser User
+	if err := self.DB.Table("users").Where("email = ? OR login = ?", email, login).First(&existingUser).Error; err == nil {
+		return nil, errors.New("Пользователь с таким email или login уже существует")
+	}
+
 	userDto := &User{
 		Login:    login,
 		Email:    email,
