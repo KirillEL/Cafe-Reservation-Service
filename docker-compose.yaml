@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: "frontend/"
+      dockerfile: "../.docker/Dockerfile.frontend"
+    container_name: "cafe_frontend"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - net
+
+  backend:
+    build:
+      context: "backend/"
+      dockerfile: "../.docker/Dockerfile.backend"
+    container_name: "cafe_backend"
+    ports:
+      - "1010:1010"
+    networks:
+      - net
+
+  m_db:
+    image: "postgres:latest"
+    container_name: m_db
+    restart: always
+    environment:
+      POSTGRES_DB: "cafe"
+      POSTGRES_PASSWORD: "Kirik228"
+      POSTGRES_USER: "postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+      - "./enum.sql:/docker-entrypoint-initdb.d/enum.sql"
+    networks:
+      - net
+
+volumes:
+  postgres_data:
+
+networks:
+  net:
