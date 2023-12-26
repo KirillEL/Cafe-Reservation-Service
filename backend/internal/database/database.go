@@ -1,9 +1,10 @@
 package database
 
 import (
+	"log"
+
 	"github.com/ivan/cafe_reservation/internal/repository"
 	"gorm.io/gorm"
-	"log"
 )
 
 func ConnectToDB(dialector gorm.Dialector) (*gorm.DB, error) {
@@ -12,7 +13,7 @@ func ConnectToDB(dialector gorm.Dialector) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	if err:=gormDB.Exec("Create TYPE role_type as ENUM('admin', 'user');").Error; err != nil {
+	if err := gormDB.Exec("Create TYPE role_type as ENUM('admin', 'user');").Error; err != nil {
 		log.Println(err)
 	}
 
@@ -20,11 +21,11 @@ func ConnectToDB(dialector gorm.Dialector) (*gorm.DB, error) {
 		log.Println(err)
 	}
 
+	gormDB.AutoMigrate(&repository.User{}, &repository.Customer{}, &repository.Reservation{}, &repository.Table{})
+
 	if err := gormDB.Exec("INSERT INTO users(login, email, password, role) values('admin','admin@admin.com', 'admin1', 'admin');").Error; err != nil {
 		log.Println(err)
 	}
-
-	gormDB.AutoMigrate(&repository.User{}, &repository.Customer{}, &repository.Reservation{}, &repository.Table{})
 
 	return gormDB, nil
 }
