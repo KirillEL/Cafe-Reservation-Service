@@ -35,7 +35,7 @@ func Run(port int) {
 	app.Use(cors.New(cors.Config{
 		// Allow all origins for development purposes
 		// In production, replace with your frontend's actual URL
-		AllowOrigins: []string{"http://localhost:3000"},
+		AllowOrigins: []string{"http://localhost:3001", "http://185.246.66.238:3001", "http://elertk133.fvds.ru:3001"},
 
 		// Allow only specific methods
 		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},

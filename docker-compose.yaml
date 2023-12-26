@@ -7,7 +7,7 @@ services:
       dockerfile: "../.docker/Dockerfile.frontend"
     container_name: "cafe_frontend"
     ports:
-      - "3000:3000"
+      - "3001:3000"
     depends_on:
       - backend
     networks:
@@ -18,6 +18,8 @@ services:
       context: "backend/"
       dockerfile: "../.docker/Dockerfile.backend"
     container_name: "cafe_backend"
+    depends_on:
+      - m_db
     ports:
       - "1010:1010"
     networks:
@@ -32,7 +34,7 @@ services:
       POSTGRES_PASSWORD: "Kirik228"
       POSTGRES_USER: "postgres"
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - "postgres_data:/var/lib/postgresql/data"
       - "./enum.sql:/docker-entrypoint-initdb.d/enum.sql"
