@@ -31,7 +31,7 @@ func HandlerCommandLoginUser(service user.UseCase) gin.HandlerFunc {
 			return
 		}
 
-		ctx.SetCookie("token", token, 3600, "/", "", false, false)
+		ctx.SetCookie("token", token, 3600, "/", "localhost", false, false)
 
 		ctx.JSON(http.StatusOK, gin.H{
 			"status": http.StatusOK,
